@@ -4,9 +4,12 @@ import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -62,9 +65,22 @@ public class LoginServlet extends HttpServlet {
 		//neu dung chuyen sang trang dashboard
 		//neu sai chuyen ve trang login
 		 if ("admin".equals(username) && "123456".equals(password)) {
-			 RequestDispatcher requestDispatcher = request.getRequestDispatcher("dashboard.jsp");
-			 requestDispatcher.forward(request, response);
-			 //response.sendRedirect("dashboard.jsp"); // Thay "dashboard.jsp" bằng URL thực tế
+//			 RequestDispatcher requestDispatcher = request.getRequestDispatcher("dashboard.jsp");
+//			 requestDispatcher.forward(request, response);
+			 
+			 //cookie
+			 Cookie ckUsername = new Cookie("username", username);
+			 Cookie ckLoginDate = new Cookie("loginDate",System.currentTimeMillis()+"");
+			 
+			 response.addCookie(ckUsername);
+			 response.addCookie(ckLoginDate);
+			 
+			 //session
+			 HttpSession session = request.getSession();
+			 session.setAttribute("username", username);
+			 session.setAttribute("loginDate:", System.currentTimeMillis()+"");
+			 
+			 response.sendRedirect("dashboard");
 			 } else {
 				 RequestDispatcher requestDispatcher = request.getRequestDispatcher("error.jsp");
 				 requestDispatcher.forward(request, response);

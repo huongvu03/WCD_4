@@ -62,7 +62,15 @@
 </head>  
 <body>  
     <div class="dashboard-container">  
-        <div class="dashboard-header">Welcome, Admin!</div>  
+        <div class="dashboard-header">
+    Welcome, 
+    <a href="profile.jsp" class="username-link">
+        <%= request.getAttribute("username") != null ? request.getAttribute("username") : "Guest" %>
+    </a>!
+</div>
+<p class="text-center">
+    Last login: <%= request.getAttribute("loginDate") != null ? request.getAttribute("loginDate") : "Unknown" %>
+</p>
         <ul class="nav nav-pills mb-3 justify-content-center">  
             <li class="nav-item">  
                 <a class="nav-link active" href="#">Dashboard</a>  
@@ -71,7 +79,7 @@
                 <a class="nav-link" href="#">Orders</a>  
             </li>  
             <li class="nav-item">  
-                <a class="nav-link" href="#">Products</a>  
+                <a class="nav-link" href="./products">Products</a>  
             </li>  
             <li class="nav-item">  
                 <a class="nav-link" href="#">Customers</a>  
