@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
-
-<%-- <%@ taglib prefix="c" uri="jakarta.servlet.jsp.jstl" prefix="c" %> --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -67,8 +65,21 @@ body {
 
 		<!-- Add Product -->
 		<div class="mb-3 text-end">
-			<a href="add-product.jsp" class="btn btn-success">+ Add Product</a>
+			<a href="products?action=add" class="btn btn-success">+ Add
+				Product</a>
 		</div>
+
+		<!-- PHÂN TRANG -->
+		<c:set var="productsPerPage" value="3" />
+		<c:set var="totalProducts" value="${fn:length(listProducts)}" />
+		<c:set var="totalPages"
+			value="${(totalProducts / productsPerPage) + (totalProducts % productsPerPage > 0 ? 1 : 0)}" />
+		<c:set var="currentPage"
+			value="${param.page != null ? param.page : 1}" />
+		<c:set var="startIndex" value="${(currentPage - 1) * productsPerPage}" />
+		<c:set var="endIndex"
+			value="${(startIndex + productsPerPage) > totalProducts ? totalProducts : (startIndex + productsPerPage)}" />
+
 		<!-- Product List Table -->
 		<table class="table table-bordered table-hover">
 			<thead class="table-dark">
@@ -82,48 +93,78 @@ body {
 				</tr>
 			</thead>
 			<tbody id="productTable">
-				<%-- cách 1: JSP Scriptlet để hiển thị listProducts
-						cách 2: sử dụng taglib JSTL để hiển thị listProducts --%>
-					<!-- cach 2: -->
-				<c:forEach var="product" items="${listProducts}">
+				<c:forEach var="i" begin="${startIndex}" end="${endIndex - 1}">
+					<c:set var="product" value="${listProducts[i]}" />
 					<tr>
 						<td>${product.code}</td>
 						<td>${product.name}</td>
 						<td>$${product.price}</td>
-						<td><img src="${product.imagePath}" alt="${product.name}"></td>
-						
-						<td><a href="product?action=addCart?code=${product.code}"
+						<td><img
+							src="${pageContext.request.contextPath}/${product.imagePath}"
+							alt="Product Image"></td>
+						<td><a href="products?action=addCart&code=${product.code}"
 							class="btn btn-primary btn-sm">Add to Cart</a></td>
-						<td><a href="product?action=update?code=${product.code}"
-							class="btn btn-warning btn-sm btn-action">Edit</a> <a
-							href="product?action=delete?code=${product.code}"
+						<td><a href="products?action=update&code=${product.code}"
+							class="btn btn-warning btn-sm">Edit</a> <a
+							href="products?action=delete&code=${product.code}"
 							class="btn btn-danger btn-sm">Delete</a></td>
 					</tr>
 				</c:forEach>
-
 			</tbody>
 		</table>
-	</div>
 
-	<!-- Bootstrap JS -->
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-	<script>
-		function searchProduct() {
-			let input = document.getElementById("searchInput").value
-					.toLowerCase();
-			let table = document.getElementById("productTable");
-			let rows = table.getElementsByTagName("tr");
+		<!-- Pagination -->
+		<div class="text-center mt-4">
+			<c:if test="${totalPages > 1}">
+				<nav>
+					<ul class="pagination justify-content-center">
+						<!-- Previous Page -->
+						<c:if test="${currentPage > 1}">
+							<li class="page-item"><a class="page-link"
+								href="products?page=${currentPage - 1}">Previous</a></li>
+						</c:if>
 
-			for (let i = 0; i < rows.length; i++) {
-				let nameCol = rows[i].getElementsByTagName("td")[1];
-				if (nameCol) {
-					let name = nameCol.textContent || nameCol.innerText;
-					rows[i].style.display = name.toLowerCase().includes(input) ? ""
-							: "none";
+						<!-- Display Page Numbers -->
+						<c:set var="startPage"
+							value="${currentPage - 1 > 0 ? currentPage - 1 : 1}" />
+						<c:set var="endPage"
+							value="${currentPage + 1 <= totalPages ? currentPage + 1 : totalPages}" />
+
+						<c:forEach var="i" begin="${startPage}" end="${endPage}">
+							<li class="page-item ${i == currentPage ? 'active' : ''}"><a
+								class="page-link" href="products?page=${i}">${i}</a></li>
+						</c:forEach>
+
+						<!-- Next Page -->
+						<c:if test="${currentPage < totalPages}">
+							<li class="page-item"><a class="page-link"
+								href="products?page=${currentPage + 1}">Next</a></li>
+						</c:if>
+					</ul>
+				</nav>
+			</c:if>
+		</div>
+
+
+		<!-- Bootstrap JS -->
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+		<script>
+			function searchProduct() {
+				let input = document.getElementById("searchInput").value
+						.toLowerCase();
+				let table = document.getElementById("productTable");
+				let rows = table.getElementsByTagName("tr");
+
+				for (let i = 0; i < rows.length; i++) {
+					let nameCol = rows[i].getElementsByTagName("td")[1];
+					if (nameCol) {
+						let name = nameCol.textContent || nameCol.innerText;
+						rows[i].style.display = name.toLowerCase().includes(
+								input) ? "" : "none";
+					}
 				}
 			}
-		}
-	</script>
+		</script>
 </body>
 </html>
