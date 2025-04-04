@@ -116,6 +116,7 @@ public class ProductServlet extends HttpServlet {
 			String imagePath = saveImage(imagePart); // Lưu hình ảnh và lấy đường dẫn
 
 			Product newProduct = new Product(code, name, price, imagePath);
+			
 			productDao.addProduct(newProduct); // Gọi phương thức addProduct để lưu vào DB
 
 			response.sendRedirect("products"); // Quay lại danh sách sản phẩm
