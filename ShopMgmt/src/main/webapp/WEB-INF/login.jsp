@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,6 +82,7 @@
     <div class="header-banner">Shop Management</div>
     <div class="subtext">Welcome to the Shop Management</div>
     <h2>Login</h2>
+    <h3>${message}</h3>
     <form action="login" method="post">
       <div class="mb-3">
         <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
