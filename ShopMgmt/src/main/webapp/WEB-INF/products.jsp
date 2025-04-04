@@ -99,9 +99,19 @@ body {
 						<td>${product.code}</td>
 						<td>${product.name}</td>
 						<td>$${product.price}</td>
-						<td><img
-							src="${pageContext.request.contextPath}/${product.imagePath}"
-							alt="Product Image"></td>
+						<td><c:choose>
+								<c:when test="${product.imagePath != null && !product.imagePath.isEmpty()}">
+									<img
+										src="${pageContext.request.contextPath}/${product.imagePath}"
+										alt="Product Image">
+									<a
+										href="${pageContext.request.contextPath}/${product.imagePath}"
+										download="${product.imagePath}" class="btn btn-primary">Download</a>
+								</c:when>
+								<c:otherwise>
+            ${product.name}
+        </c:otherwise>
+							</c:choose></td>
 						<td><a href="products?action=addCart&code=${product.code}"
 							class="btn btn-primary btn-sm">Add to Cart</a></td>
 						<td><a href="products?action=update&code=${product.code}"

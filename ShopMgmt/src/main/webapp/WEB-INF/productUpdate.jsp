@@ -62,6 +62,10 @@ body {
 					src="${pageContext.request.contextPath}/${product.imagePath}"
 					alt="Product Image" width="200">
 			</div>
+			<!-- Error message for invalid image -->
+			<c:if test="${not empty errorMessage}">
+				<div class="alert alert-danger mt-2">${errorMessage}</div>
+			</c:if>
 			<div class="text-center">
 				<button type="submit" class="btn btn-success">Update</button>
 				<a href="products" class="btn btn-secondary">Cancel</a>

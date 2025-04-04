@@ -51,7 +51,7 @@ body {
 			</div>
 			<div class="mb-3">
 				<label>Image URL:</label> <input type="file" class="form-control"
-					name="image" accept="image/*" required>
+					name="image" accept="image/*" >
 			</div>
 			<button type="submit" class="btn btn-success">Add Product</button>
 			<a href="products" class="btn btn-secondary">Cancel</a>
