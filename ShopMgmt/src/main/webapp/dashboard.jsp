@@ -91,7 +91,7 @@
 
         <div class="text-center mt-4">  
             <p>Manage your shop effectively with our dashboard!</p>  
-            <a href="login.jsp" class="btn btn-logout">Logout</a>  
+            <a href="logout" class="btn btn-logout">Logout</a>  
         </div>  
     </div>  
 

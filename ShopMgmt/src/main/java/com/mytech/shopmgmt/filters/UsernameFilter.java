@@ -22,6 +22,7 @@ import jakarta.servlet.http.HttpServletResponse;
 //thêm dòng này
 @WebFilter(urlPatterns = { "/users",
 		"/login" }, initParams = @WebInitParam(name = "notAllowedName", value = "facebook,google,zalo"))
+
 public class UsernameFilter extends HttpFilter implements Filter {
 
 	private static final long serialVersionUID = 8144985062131488599L;
